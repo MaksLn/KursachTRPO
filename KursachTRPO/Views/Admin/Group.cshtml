@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Group";
+    @model List<KursachTRPO.Models.bdModel.Group>;
+}
+
+
+<div style="margin:unset; padding:unset" class="container">
+    <div class="row">
+        @{await Html.RenderPartialAsync("_Menu");}
+        <div class="col-lg-10">
+            <a href="AddGroup" class="btn btn-success glyphicon ">Добавить группу</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr><td>Название</td><td>Дата создания</td><td>Специальность</td><td>Кол-во ствудентов</td></tr>
+                </thead>
+                <tbody>
+                    @{ foreach (var i in Model)
+                        {
+                    <tr>
+                        <td>@i.Name</td>
+                        <td>@i.Specialty</td>
+                        <td>@i.CreateYear</td>
+                        <td>
+                            @i.Students.Count()
+                        </td>
+                        <td style="width:10%">
+                            <form action="/Admin/PutGroup" asp-antiforgery="true" method="get">
+                                <input type="hidden" name="Id" value="@i.Id" />
+                                <input type="submit" class="btn btn-primary" value="Изменить" />
+                            </form>
+                        </td>
+                        <td style="width:10%">
+                            <form asp-antiforgery="true" method="post">
+                                <input type="hidden" name="Id" value="@i.Id" />
+                                <input type="submit" class="btn btn-danger" value="Удалить" />
+                            </form>
+                        </td>
+                    </tr>
+                    }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

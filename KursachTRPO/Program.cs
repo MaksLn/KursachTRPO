@@ -19,6 +19,7 @@ namespace KursachTRPO
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+            .UseKestrel(options => { options.Listen(System.Net.IPAddress.Any, 5000); });
     }
 }

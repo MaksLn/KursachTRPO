@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using KursachTRPO.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KursachTRPO.Controllers
 {
+    [Authorize(Roles = "user")]
     public class HomeController : Controller
     {
         public IActionResult Index()

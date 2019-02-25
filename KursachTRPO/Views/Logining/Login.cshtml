@@ -1,22 +1,25 @@
 ﻿
 @{
     ViewData["Title"] = "Login";
+    @model KursachTRPO.Models.LoginModel
 }
 
 
 <div class="container col-lg-12">
     <div class="col-lg-offset-10">
         <h2>Вход</h2>
-        <form method="post">
+        <form method="post" asp-antiforgery="true">
             <label for="Login">Логин</label>
             <br />
-            <input type="text" id="Login" name="Login" />
+            <input type="text" id="Login" asp-for="Login" name="Login" />
+            <span asp-validation-for="Login" />
             <br />
             <label for="password">Пароль</label>
             <br />
-            <input type="password" id="password" name="Password" />
+            <input type="password" asp-for="Password" id="password" name="Password" />
+            <span asp-validation-for="Password" />
             <br />
-            <input type="submit" />
+            <input value="Вход" type="submit" />
         </form>
     </div>
 </div>

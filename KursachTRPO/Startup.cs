@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KursachTRPO.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +33,16 @@ namespace KursachTRPO
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            string connection = "Server=(localdb)\\mssqllocaldb;Database=TRPObd;Trusted_Connection=True;";
+            services.AddDbContext<AutorizationContext>(options => options.UseSqlServer(connection));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Logining/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Logining/Login");
+                });
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -46,9 +59,11 @@ namespace KursachTRPO
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "Users";
+    @model List<KursachTRPO.Models.User>;
+}
+
+<div style="margin:unset; padding:unset" class="container">
+    <div class="row">
+        @{await Html.RenderPartialAsync("_Menu");}
+        <div class="col-lg-10">
+            <a href="AddUser" class="btn btn-success glyphicon ">Добавить пользователя</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr><td>Имя</td><td>Email</td><td>Пароль</td><td>Роль</td></tr>
+                </thead>
+                <tbody>
+                    @{ foreach (var i in Model)
+                        {
+                            <tr>
+                                <td>@i.Login</td>
+                                <td>@i.Email</td>
+                                <td>@i.Password</td>
+                                <td>
+                                    @if (i.RoleId == 1)
+                                    {<p>Admin</p> }
+                                    else
+                                    {<p>User</p>}
+                            </td>
+                            <td style="width:10%">
+                                <form asp-antiforgery="true" method="post">
+                                    <input type="hidden" name="Login" value="@i.Login" />
+                                    <input type="submit" class="btn btn-danger" value="Удалить" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
