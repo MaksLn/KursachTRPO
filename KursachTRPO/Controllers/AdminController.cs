@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KursachTRPO.Models;
+﻿using KursachTRPO.Models;
+using KursachTRPO.Models.bdModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using KursachTRPO.Models.bdModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KursachTRPO.Controllers
 {
@@ -22,7 +21,7 @@ namespace KursachTRPO.Controllers
 
         public IActionResult Index()
         {
-            TempData["UserName"] = HttpContext.User.Claims.Where((x,i)=>i==2).FirstOrDefault().Value;
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
             return View();
         }
 
@@ -30,7 +29,7 @@ namespace KursachTRPO.Controllers
         public IActionResult Group()
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
-            List<Group> groups = new List<Group>(_context.Group.Include(s=>s.Students));
+            List<Group> groups = new List<Group>(_context.Group.Include(s => s.Students));
             return View(groups);
         }
 
@@ -69,7 +68,7 @@ namespace KursachTRPO.Controllers
                     _context.Group.Add(new Group { Name = groupModel.Name, Specialty = groupModel.Specialty, CreateYear = groupModel.CreateYear });
                     await _context.SaveChangesAsync();
 
-                    return View();
+                    return RedirectToAction("Group", "Admin");
                 }
                 else
                 {
@@ -85,7 +84,7 @@ namespace KursachTRPO.Controllers
             Group group = _context.Group.Where(G => G.Id == Id).FirstOrDefault();
             if (group != null)
             {
-                return View(new GroupModel {Id=group.Id, Name = group.Name, Specialty = group.Specialty, CreateYear = group.CreateYear });
+                return View(new GroupModel { Id = group.Id, Name = group.Name, Specialty = group.Specialty, CreateYear = group.CreateYear });
             }
 
             return View();
@@ -107,7 +106,7 @@ namespace KursachTRPO.Controllers
                     _context.Group.Update(group);
                     await _context.SaveChangesAsync();
 
-                    return View();
+                    return RedirectToAction("Group", "Admin");
                 }
                 else
                 {
@@ -158,21 +157,169 @@ namespace KursachTRPO.Controllers
                 User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == userModel.Login);
                 if (user == null)
                 {
-                    // добавляем пользователя в бд
-                    user = new User { Email = userModel.Email, Login=userModel.Login, Password = userModel.Password };
+                    user = new User { Email = userModel.Email, Login = userModel.Login, Password = userModel.Password };
                     Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == userModel.Role.ToLower());
                     if (userRole != null)
+                    {
                         user.Role = userRole;
+                    }
 
                     _context.Users.Add(user);
                     await _context.SaveChangesAsync();
 
-                    return View();
+                    return RedirectToAction("Users", "Admin");
                 }
                 else
+                {
                     ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                }
             }
             return View(userModel);
+        }
+
+        [HttpGet]
+        public IActionResult Students(string Name = "")
+        {
+            List<StudentsModel> studentsModels;
+
+            if (Name != "")
+            {
+                var ls = _context.Students.Include(e => e.Group).Where(e => e.Group.Name == Name);
+
+                if (ls != null)
+                {
+                    studentsModels = new List<StudentsModel>();
+
+                    foreach (var i in ls)
+                    {
+                        studentsModels.Add(new StudentsModel
+                        {
+                            Name = i.Name,
+                            Address = i.Address,
+                            GroupName = i.Group.Name,
+                            LastName = i.LastName,
+                            Id = i.Id,
+                            MidleName = i.MidleName,
+                            NumberOfBook = i.NumberOfBook
+                        });
+                    }
+                }
+            }
+
+            studentsModels = new List<StudentsModel>();
+
+            foreach (var i in _context.Students.Include(e => e.Group))
+            {
+                try
+                {
+                    studentsModels.Add(new StudentsModel
+                    {
+                        Name = i.Name,
+                        Address = i.Address,
+                        GroupName = i.Group.Name,
+                        LastName = i.LastName,
+                        Id = i.Id,
+                        MidleName = i.MidleName,
+                        NumberOfBook = i.NumberOfBook
+                    });
+                }
+                catch (Exception exception)
+                {
+                    studentsModels.Add(new StudentsModel
+                    {
+                        Name = i.Name,
+                        Address = i.Address,
+                        LastName = i.LastName,
+                        Id = i.Id,
+                        MidleName = i.MidleName,
+                        NumberOfBook = i.NumberOfBook
+                    });
+                }
+            }
+
+            return View(studentsModels);
+        }
+
+        [HttpGet]
+        public IActionResult AddStudents()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddStudents(StudentsModel studentsModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Student student = _context.Students.Where(e => e.NumberOfBook == studentsModel.NumberOfBook).FirstOrDefault();
+
+                if (student == null)
+                {
+                    _context.Students.Add(new Student
+                    {
+                        Name = studentsModel.Name,
+                        Address = studentsModel.Address,
+                        Group = _context.Group.Where(e => e.Name == studentsModel.GroupName).FirstOrDefault(),
+                        LastName = studentsModel.LastName,
+                        MidleName = studentsModel.MidleName,
+                        NumberOfBook = studentsModel.NumberOfBook
+                    });
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Students", "Admin");
+                }
+                else
+                {
+                    ModelState.AddModelError("G", "Группа уже существует");
+                }
+            }
+            return View(studentsModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Students(int Id)
+        {
+            Student student = await _context.Students.FirstOrDefaultAsync(u => u.Id == Id);
+
+            if (student != null)
+            {
+                _context.Students.Remove(student);
+                await _context.SaveChangesAsync();
+            }
+
+            List<StudentsModel> studentsModels = new List<StudentsModel>();
+
+            foreach (var i in _context.Students.Include(e => e.Group))
+            {
+                try
+                {
+                    studentsModels.Add(new StudentsModel
+                    {
+                        Name = i.Name,
+                        Address = i.Address,
+                        GroupName = i.Group.Name,
+                        LastName = i.LastName,
+                        Id = i.Id,
+                        MidleName = i.MidleName,
+                        NumberOfBook = i.NumberOfBook
+                    });
+                }
+                catch (Exception exception)
+                {
+                    studentsModels.Add(new StudentsModel
+                    {
+                        Name = i.Name,
+                        Address = i.Address,
+                        LastName = i.LastName,
+                        Id = i.Id,
+                        MidleName = i.MidleName,
+                        NumberOfBook = i.NumberOfBook
+                    });
+                }
+            }
+            return View(studentsModels);
         }
     }
 }

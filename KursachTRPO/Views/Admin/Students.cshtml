@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "Students";
+}
+@model List<KursachTRPO.Models.StudentsModel>;
+
+<div style="margin:unset; padding:unset" class="container">
+    <div class="row">
+        @{await Html.RenderPartialAsync("_Menu");}
+        <div class="col-lg-10">
+            <a href="AddStudents" class="btn btn-success glyphicon ">Добавить студента</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr><td>Фамилия</td><td>Имя</td><td>Отчество</td><td>Группа</td><td>Адрес</td><td>Номер зачетной книжки</td></tr>
+                </thead>
+                <tbody>
+                    @{ foreach (var i in Model)
+                        {
+                    <tr>
+                        <td>@i.MidleName</td>
+                        <td>@i.Name</td>
+                        <td>@i.LastName</td>
+                        <td>@i.GroupName</td>
+                        <td>@i.Address</td>
+                        <td style="width:18%">@i.NumberOfBook</td>
+
+                        <td style="width:10%">
+                            <form action="/Admin/PutGroup" asp-antiforgery="true" method="get">
+                                <input type="hidden" name="Id" value="@i.Id" />
+                                <input type="submit" class="btn btn-primary" value="Изменить" />
+                            </form>
+                        </td>
+
+                        <td style="width:10%">
+                            <form asp-antiforgery="true" method="post">
+                                <input type="hidden" name="Id" value="@i.Id" />
+                                <input type="submit" class="btn btn-danger" value="Удалить" />
+                            </form>
+                        </td>
+                    </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
