@@ -371,6 +371,55 @@ namespace KursachTRPO.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PutStudent(StudentsModel studentModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Student student = _context.Students.Include(e=>e.Group).Where(e => e.Id == studentModel.Id).FirstOrDefault();
+
+                if (student != null)
+                {
+                    if (studentModel.GroupName != "")
+                    {
+                        var group = _context.Group.Where(e => e.Name == studentModel.GroupName).FirstOrDefault();
+
+                        if (group != null)
+                        {
+                            student.Id = student.Id;
+                            student.Name = student.Name;
+                            student.Address = student.Address;
+                            student.Group = group;
+                            student.LastName = student.LastName;
+                            student.MidleName = student.MidleName;
+                            student.NumberOfBook = student.NumberOfBook;
+
+                            _context.Students.Update(student);
+                        }
+
+                        student.Id = student.Id;
+                        student.Name = student.Name;
+                        student.Address = student.Address;
+                        student.LastName = student.LastName;
+                        student.MidleName = student.MidleName;
+                        student.NumberOfBook = student.NumberOfBook;
+
+                        _context.Students.Update(student);
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("Students", "Admin");
+                }
+                else
+                {
+                    ModelState.AddModelError("G", "Группа уже существует");
+                }
+            }
+            return View(studentModel);
+        }
+
 
         [HttpGet]
         public IActionResult StudentInfo()
