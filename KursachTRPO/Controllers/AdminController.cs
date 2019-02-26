@@ -52,6 +52,8 @@ namespace KursachTRPO.Controllers
         [HttpGet]
         public IActionResult AddGroup()
         {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
             return View();
         }
 
@@ -81,6 +83,8 @@ namespace KursachTRPO.Controllers
         [HttpGet]
         public IActionResult PutGroup(int Id)
         {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
             Group group = _context.Group.Where(G => G.Id == Id).FirstOrDefault();
             if (group != null)
             {
@@ -119,6 +123,7 @@ namespace KursachTRPO.Controllers
         [HttpGet]
         public IActionResult Users()
         {
+
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
             List<User> users = new List<User>(_context.Users);
             return View(users);
@@ -180,6 +185,8 @@ namespace KursachTRPO.Controllers
         [HttpGet]
         public IActionResult Students(string Name = "")
         {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
             List<StudentsModel> studentsModels;
 
             if (Name != "")
@@ -203,6 +210,8 @@ namespace KursachTRPO.Controllers
                             NumberOfBook = i.NumberOfBook
                         });
                     }
+
+                    return View(studentsModels.OrderBy(e => e.GroupName).ToList());
                 }
             }
 
@@ -237,12 +246,14 @@ namespace KursachTRPO.Controllers
                 }
             }
 
-            return View(studentsModels);
+            return View(studentsModels.OrderBy(e=>e.GroupName).ToList());
         }
 
         [HttpGet]
         public IActionResult AddStudents()
         {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
             return View();
         }
 
@@ -281,6 +292,8 @@ namespace KursachTRPO.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Students(int Id)
         {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
             Student student = await _context.Students.FirstOrDefaultAsync(u => u.Id == Id);
 
             if (student != null)
@@ -319,7 +332,7 @@ namespace KursachTRPO.Controllers
                     });
                 }
             }
-            return View(studentsModels);
+            return View(studentsModels.OrderBy(e => e.GroupName).ToList());
         }
     }
 }

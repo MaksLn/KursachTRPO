@@ -17,13 +17,13 @@
                 <tbody>
                     @{ foreach (var i in Model)
                         {
-                    <tr>
-                        <td>@i.Name</td>
-                        <td>@i.Specialty</td>
-                        <td>@i.CreateYear</td>
-                        <td>
-                            @i.Students.Count()
-                        </td>
+                     <tr>
+                             <td  onclick="window.location.href='/Admin/Students?Name=@i.Name'; return false">@i.Name</td>
+                             <td  onclick="window.location.href='/Admin/Students?Name=@i.Name'; return false">@i.Specialty</td>
+                             <td  onclick="window.location.href='/Admin/Students?Name=@i.Name'; return false">@i.CreateYear</td>
+                             <td  onclick="window.location.href='/Admin/Students?Name=@i.Name'; return false">
+                                 @i.Students.Count()
+                             </td>
                         <td style="width:10%">
                             <form action="/Admin/PutGroup" asp-antiforgery="true" method="get">
                                 <input type="hidden" name="Id" value="@i.Id" />
