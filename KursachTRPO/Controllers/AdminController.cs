@@ -246,7 +246,7 @@ namespace KursachTRPO.Controllers
                 }
             }
 
-            return View(studentsModels.OrderBy(e=>e.GroupName).ToList());
+            return View(studentsModels.OrderBy(e => e.GroupName).ToList());
         }
 
         [HttpGet]
@@ -319,7 +319,7 @@ namespace KursachTRPO.Controllers
                         NumberOfBook = i.NumberOfBook
                     });
                 }
-                catch (Exception exception)
+                catch
                 {
                     studentsModels.Add(new StudentsModel
                     {
@@ -333,6 +333,51 @@ namespace KursachTRPO.Controllers
                 }
             }
             return View(studentsModels.OrderBy(e => e.GroupName).ToList());
+        }
+
+        [HttpGet]
+        public IActionResult PutStudent(int Id)
+        {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
+            Student student = _context.Students.Include(e=>e.Group).Where(G => G.Id == Id).FirstOrDefault();
+            if (student != null)
+            {
+                if (student.Group == null)
+                {
+                    return View(new StudentsModel
+                    {
+                        Id = student.Id,
+                        Name = student.Name,
+                        Address = student.Address,
+                        LastName = student.LastName,
+                        MidleName = student.MidleName,
+                        NumberOfBook = student.NumberOfBook
+                    });
+                }
+
+                return View(new StudentsModel
+                {
+                    Id = student.Id,
+                    Name = student.Name,
+                    Address = student.Address,
+                    GroupName = student.Group.Name,
+                    LastName = student.LastName,
+                    MidleName = student.MidleName,
+                    NumberOfBook = student.NumberOfBook
+                });
+            }
+
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult StudentInfo()
+        {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
+            return View();
         }
     }
 }

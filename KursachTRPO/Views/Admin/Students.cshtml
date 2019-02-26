@@ -17,15 +17,15 @@
                     @{ foreach (var i in Model)
                         {
                     <tr>
-                        <td>@i.MidleName</td>
-                        <td>@i.Name</td>
-                        <td>@i.LastName</td>
-                        <td>@i.GroupName</td>
-                        <td>@i.Address</td>
-                        <td style="width:18%">@i.NumberOfBook</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.MidleName</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.Name</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.LastName</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.GroupName</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.Address</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo'; return false" style="width:18%">@i.NumberOfBook</td>
 
                         <td style="width:10%">
-                            <form action="/Admin/PutGroup" asp-antiforgery="true" method="get">
+                            <form action="/Admin/PutStudent" asp-antiforgery="true" method="get">
                                 <input type="hidden" name="Id" value="@i.Id" />
                                 <input type="submit" class="btn btn-primary" value="Изменить" />
                             </form>
