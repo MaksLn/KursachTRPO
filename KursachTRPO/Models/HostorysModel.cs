@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KursachTRPO.Models.bdModel
+namespace KursachTRPO.Models
 {
-    public class HistorySkips
+    public class HostorysModel
     {
-        [Key]
         public int Id { get; set; }
         public string Type { get; set; }
+        public DateTime DateTime { get; set; }
+
+        public int IdSkips { get; set; }
+        public string TypeSkips { get; set; }
         public string Cause { get; set; }
         public DateTime StartSkips { get; set; }
         public DateTime EndSkips { get; set; }
 
-        public int? StudentId { get; set; }
-        public Student Student { get; set; }
     }
 }
