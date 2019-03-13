@@ -340,7 +340,7 @@ namespace KursachTRPO.Controllers
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
 
-            Student student = _context.Students.Include(e=>e.Group).Where(G => G.Id == Id).FirstOrDefault();
+            Student student = _context.Students.Include(e => e.Group).Where(G => G.Id == Id).FirstOrDefault();
             if (student != null)
             {
                 if (student.Group == null)
@@ -377,7 +377,7 @@ namespace KursachTRPO.Controllers
         {
             if (ModelState.IsValid)
             {
-                Student student = _context.Students.Include(e=>e.Group).Where(e => e.Id == studentModel.Id).FirstOrDefault();
+                Student student = _context.Students.Include(e => e.Group).Where(e => e.Id == studentModel.Id).FirstOrDefault();
 
                 if (student != null)
                 {
@@ -422,9 +422,26 @@ namespace KursachTRPO.Controllers
 
 
         [HttpGet]
-        public IActionResult StudentInfo()
+        public IActionResult StudentInfo(int? Id)
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
+            var temp = _context.Students.Include(e => e.Histories).Include(e => e.HistorySkips).Where(e => e.Id == Id).FirstOrDefault();
+
+            HistorysModel historysModel = new HistorysModel
+            {
+                historySkipsModels = HistorySkips.Convert(temp.HistorySkips),
+                historyModels = History.Convert(temp.Histories)
+            };
+
+            return View(historysModel);
+        }
+
+        [HttpGet]
+        public IActionResult AddSkips(int? Id)
+        {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
 
             return View();
         }

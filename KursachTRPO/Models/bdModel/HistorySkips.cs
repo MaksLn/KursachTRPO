@@ -17,5 +17,29 @@ namespace KursachTRPO.Models.bdModel
 
         public int? StudentId { get; set; }
         public Student Student { get; set; }
+
+        public static List<HistorySkipsModel> Convert(List<HistorySkips> historySkips)
+        {
+            List<HistorySkipsModel> historySkipsModels = new List<HistorySkipsModel>();
+
+            foreach(var i in historySkips)
+            {
+                historySkipsModels.Add(i);
+            }
+
+            return historySkipsModels;
+        }
+
+        public static implicit operator HistorySkipsModel(HistorySkips historySkips)
+        {
+            return new HistorySkipsModel
+            {
+                Cause = historySkips.Cause,
+                EndSkips = historySkips.EndSkips,
+                IdSkips = historySkips.Id,
+                StartSkips = historySkips.StartSkips,
+                TypeSkips = historySkips.Type
+            };
+        }
     }
 }

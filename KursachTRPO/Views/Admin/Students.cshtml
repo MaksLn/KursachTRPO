@@ -17,12 +17,12 @@
                     @{ foreach (var i in Model)
                         {
                     <tr>
-                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.MidleName</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.Name</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.LastName</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.GroupName</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo'; return false">@i.Address</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo'; return false" style="width:18%">@i.NumberOfBook</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.MidleName</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.Name</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.LastName</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.GroupName</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.Address</td>
+                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false" style="width:18%">@i.NumberOfBook</td>
 
                         <td style="width:10%">
                             <form action="/Admin/PutStudent" asp-antiforgery="true" method="get">

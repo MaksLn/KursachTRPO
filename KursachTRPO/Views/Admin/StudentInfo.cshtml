@@ -2,6 +2,61 @@
 @{
     ViewData["Title"] = "StudentInfo";
 }
+@model KursachTRPO.Models.HistorysModel;
 
-<h2>StudentInfo</h2>
+<div style="margin:unset; padding:unset" class="container">
+    <div class="row">
+        @{await Html.RenderPartialAsync("_Menu");}
+        <div class="col-lg-6">
+            <a href="AddSkips" class="btn btn-success glyphicon ">Добавить пропуск</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr><td>Тип пропуска</td><td>Причина</td><td>Периуд отсутствия</td></tr>
+                </thead>
+                <tbody>
+                    @{ foreach (var i in Model.historySkipsModels)
+                        {
+                    <tr>
+                        <td>@i.TypeSkips</td>
+                        <td>@i.Cause</td>
+                        <td>@i.StartSkips.ToLongDateString() - @i.EndSkips.ToLongDateString()</td>
+                        <td style="width:10%">
+                            <form asp-antiforgery="true" method="post">
+                                <input type="hidden" name="Id" value="@i.IdSkips" />
+                                <input type="submit" class="btn btn-danger" value="Удалить" />
+                            </form>
+                        </td>
+                    </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            <a href="AddHistorys" class="btn btn-success glyphicon ">Зачислить (отчислить)</a>
+            <table class="table table-hover">
+                <thead>
+                    <tr><td>Причина зачисления(отчисления)</td><td>Дата</td></tr>
+                </thead>
+                <tbody>
+                    @{ foreach (var i in Model.historyModels)
+                        {
+                    <tr>
+                        <td>@i.Type</td>
+                        <td>@i.DateTime.ToLongDateString()</td>
+                        <td style="width:10%">
+                            <form asp-antiforgery="true" method="post">
+                                <input type="hidden" name="Id" value="@i.Id" />
+                                <input type="submit" class="btn btn-danger" value="Удалить" />
+                            </form>
+                        </td>
+                    </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 

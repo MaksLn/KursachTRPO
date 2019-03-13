@@ -15,5 +15,27 @@ namespace KursachTRPO.Models.bdModel
 
         public int? StudentId { get; set; }
         public Student Student { get; set; }
+
+        public static List<HistoryModel> Convert(List<History> histories)
+        {
+            List<HistoryModel> historyModels = new List<HistoryModel>();
+
+            foreach (var i in histories)
+            {
+                historyModels.Add(i);
+            }
+
+            return historyModels;
+        }
+
+        public static implicit operator HistoryModel(History history)
+        {
+            return new HistoryModel
+            {
+                DateTime = history.DateTime,
+                Id = history.Id,
+                Type = history.Type
+            };
+        }
     }
 }
