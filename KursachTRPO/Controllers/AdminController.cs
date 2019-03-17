@@ -282,7 +282,6 @@ namespace KursachTRPO.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("G", "Группа уже существует");
                 }
             }
             return View(studentsModel);
@@ -431,7 +430,8 @@ namespace KursachTRPO.Controllers
             HistorysModel historysModel = new HistorysModel
             {
                 historySkipsModels = HistorySkips.Convert(temp.HistorySkips),
-                historyModels = History.Convert(temp.Histories)
+                historyModels = History.Convert(temp.Histories),
+                StudentId = temp.Id
             };
 
             return View(historysModel);
@@ -441,9 +441,135 @@ namespace KursachTRPO.Controllers
         public IActionResult AddSkips(int? Id)
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+            return View(new HistorySkipsModel { IdStudent = Id ?? 0, StartSkips = DateTime.Now, EndSkips = DateTime.Now });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddSkips(HistorySkipsModel historySkipsModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.HistorySkips.Add(new HistorySkips
+                {
+                    Cause = historySkipsModel.Cause,
+                    EndSkips = historySkipsModel.EndSkips,
+                    StartSkips = historySkipsModel.StartSkips,
+                    Type = historySkipsModel.TypeSkips,
+                    StudentId = historySkipsModel.IdStudent
+                });
+
+                await _context.SaveChangesAsync();
+
+                return Redirect($"/Admin/StudentInfo?Id={historySkipsModel.IdStudent}");
+            }
+
+            return View(historySkipsModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StudentInfoDelete(int? Id, int? IdStudent)
+        {
+            if (Id != null && IdStudent != null)
+            {
+                try
+                {
+                    _context.Remove(_context
+                        .Students
+                        .Include(e => e.HistorySkips)
+                        .Where(e => e.Id == IdStudent)
+                        .FirstOrDefault()
+                        .HistorySkips
+                        .Where(e => e.Id == Id).FirstOrDefault());
+                }
+                catch
+                {
+
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
+            var temp = _context.Students.Include(e => e.Histories).Include(e => e.HistorySkips).Where(e => e.Id == IdStudent).FirstOrDefault();
+
+            HistorysModel historysModel = new HistorysModel
+            {
+                historySkipsModels = HistorySkips.Convert(temp.HistorySkips),
+                historyModels = History.Convert(temp.Histories),
+                StudentId = temp.Id
+            };
+
+            return View("StudentInfo", historysModel);
+        }
+
+        [HttpGet]
+        public IActionResult AddHistorys(int? Id)
+        {
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+            return View(new HistoryModel { IdStudent = Id ?? 0, DateTime = DateTime.Now });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddHistorys(HistoryModel historyModel)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Histories.Add(new History
+                {
+                    DateTime= historyModel.DateTime, 
+                    Type = historyModel.Type,
+                    StudentId = historyModel.IdStudent
+                });
+                
+                await _context.SaveChangesAsync();
+
+                return Redirect($"/Admin/StudentInfo?Id={historyModel.IdStudent}");
+            }
+
+            return View(historyModel);
+        }
 
 
-            return View();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StudentInfoDeleteHistory(int? Id, int? IdStudent)
+        {
+            if (Id != null && IdStudent != null)
+            {
+                try
+                {
+                    _context.Remove(_context
+                        .Students
+                        .Include(e => e.Histories)
+                        .Where(e => e.Id == IdStudent)
+                        .FirstOrDefault()
+                        .Histories
+                        .Where(e => e.Id == Id).FirstOrDefault());
+                }
+                catch
+                {
+
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
+
+            var temp = _context.Students.Include(e => e.Histories).Include(e => e.HistorySkips).Where(e => e.Id == IdStudent).FirstOrDefault();
+
+            HistorysModel historysModel = new HistorysModel
+            {
+                historySkipsModels = HistorySkips.Convert(temp.HistorySkips),
+                historyModels = History.Convert(temp.Histories),
+                StudentId = temp.Id
+            };
+
+            return View("StudentInfo", historysModel);
         }
     }
 }

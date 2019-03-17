@@ -8,7 +8,7 @@
     <div class="row">
         @{await Html.RenderPartialAsync("_Menu");}
         <div class="col-lg-6">
-            <a href="AddSkips" class="btn btn-success glyphicon ">Добавить пропуск</a>
+            <a href="AddSkips?Id=@Model.StudentId" class="btn btn-success glyphicon ">Добавить пропуск</a>
             <table class="table table-hover">
                 <thead>
                     <tr><td>Тип пропуска</td><td>Причина</td><td>Периуд отсутствия</td></tr>
@@ -21,8 +21,9 @@
                         <td>@i.Cause</td>
                         <td>@i.StartSkips.ToLongDateString() - @i.EndSkips.ToLongDateString()</td>
                         <td style="width:10%">
-                            <form asp-antiforgery="true" method="post">
+                            <form asp-antiforgery="true" asp-action="StudentInfoDelete" asp-controller="Admin" method="post">
                                 <input type="hidden" name="Id" value="@i.IdSkips" />
+                                <input type="hidden" name="IdStudent" value="@Model.StudentId" />
                                 <input type="submit" class="btn btn-danger" value="Удалить" />
                             </form>
                         </td>
@@ -33,7 +34,7 @@
             </table>
         </div>
         <div class="col-lg-4">
-            <a href="AddHistorys" class="btn btn-success glyphicon ">Зачислить (отчислить)</a>
+            <a href="AddHistorys?Id=@Model.StudentId" class="btn btn-success glyphicon ">Зачислить (отчислить)</a>
             <table class="table table-hover">
                 <thead>
                     <tr><td>Причина зачисления(отчисления)</td><td>Дата</td></tr>
@@ -45,8 +46,9 @@
                         <td>@i.Type</td>
                         <td>@i.DateTime.ToLongDateString()</td>
                         <td style="width:10%">
-                            <form asp-antiforgery="true" method="post">
+                            <form asp-antiforgery="true" asp-action="StudentInfoDeleteHistory" method="post">
                                 <input type="hidden" name="Id" value="@i.Id" />
+                                <input type="hidden" name="IdStudent" value="@Model.StudentId" />
                                 <input type="submit" class="btn btn-danger" value="Удалить" />
                             </form>
                         </td>
