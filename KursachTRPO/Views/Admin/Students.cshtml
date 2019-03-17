@@ -8,36 +8,56 @@
     <div class="row">
         @{await Html.RenderPartialAsync("_Menu");}
         <div class="col-lg-10">
-            <a href="AddStudents" class="btn btn-success glyphicon ">Добавить студента</a>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a href="AddStudents" class="btn btn-success glyphicon ">Добавить студента</a>
+                    </div>
+                    <div class="col-lg-offset-9">
+                        <form class="" method="get">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <input class="form-control" type="search" name="studentSerch" />
+                                    </td>
+                                    <td>
+                                        <input class="btn btn-success" type="submit" value="Найти" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
-                    <tr><td>Фамилия</td><td>Имя</td><td>Отчество</td><td>Группа</td><td>Адрес</td><td>Номер зачетной книжки</td></tr>
+                    <tr><td>Фамилия</td><td>Имя</td><td>Отчество</td><td>Группа</td><td>Адрес</td><td>Зачетная книжка*</td></tr>
                 </thead>
                 <tbody>
                     @{ foreach (var i in Model)
                         {
-                    <tr>
-                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.MidleName</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.Name</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.LastName</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.GroupName</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.Address</td>
-                        <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false" style="width:18%">@i.NumberOfBook</td>
+                            <tr>
+                                <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.MidleName</td>
+                                <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.Name</td>
+                                <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.LastName</td>
+                                <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.GroupName</td>
+                                <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false">@i.Address</td>
+                                <td onclick="window.location.href='/Admin/StudentInfo?Id=@i.Id'; return false" style="width:18%">@i.NumberOfBook</td>
 
-                        <td style="width:10%">
-                            <form action="/Admin/PutStudent" asp-antiforgery="true" method="get">
-                                <input type="hidden" name="Id" value="@i.Id" />
-                                <input type="submit" class="btn btn-primary" value="Изменить" />
-                            </form>
-                        </td>
+                                <td style="width:10%">
+                                    <form action="/Admin/PutStudent" asp-antiforgery="true" method="get">
+                                        <input type="hidden" name="Id" value="@i.Id" />
+                                        <input type="submit" class="btn btn-primary" value="Изменить" />
+                                    </form>
+                                </td>
 
-                        <td style="width:10%">
-                            <form asp-antiforgery="true" method="post">
-                                <input type="hidden" name="Id" value="@i.Id" />
-                                <input type="submit" class="btn btn-danger" value="Удалить" />
-                            </form>
-                        </td>
-                    </tr>
+                                <td style="width:10%">
+                                    <form asp-antiforgery="true" method="post">
+                                        <input type="hidden" name="Id" value="@i.Id" />
+                                        <input type="submit" class="btn btn-danger" value="Удалить" />
+                                    </form>
+                                </td>
+                            </tr>
                         }
                     }
                 </tbody>

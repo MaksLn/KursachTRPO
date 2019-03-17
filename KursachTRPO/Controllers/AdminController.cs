@@ -26,10 +26,21 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
-        public IActionResult Group()
+        public IActionResult Group(string groupSerch)
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
-            List<Group> groups = new List<Group>(_context.Group.Include(s => s.Students));
+
+            List<Group> groups;
+
+            if (groupSerch != null)
+            {
+                groups = new List<Group>(_context.Group.Include(s => s.Students).Where(e => e.Name == groupSerch));
+            }
+            else
+            {
+                groups = new List<Group>(_context.Group.Include(s => s.Students));
+            }
+
             return View(groups);
         }
 
@@ -183,7 +194,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
-        public IActionResult Students(string Name = "")
+        public IActionResult Students(string Name = "", string studentSerch = "")
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
 
@@ -211,7 +222,14 @@ namespace KursachTRPO.Controllers
                         });
                     }
 
-                    return View(studentsModels.OrderBy(e => e.GroupName).ToList());
+                    if (studentSerch == "" || studentSerch == null)
+                    {
+                        return View(studentsModels.OrderBy(e => e.GroupName).ToList());
+                    }
+                    else
+                    {
+                        return View(studentsModels.OrderBy(e => e.GroupName).Where(e => e.NumberOfBook == studentSerch).ToList());
+                    }
                 }
             }
 
@@ -246,7 +264,14 @@ namespace KursachTRPO.Controllers
                 }
             }
 
-            return View(studentsModels.OrderBy(e => e.GroupName).ToList());
+            if (studentSerch == ""|| studentSerch==null)
+            {
+                return View(studentsModels.OrderBy(e => e.GroupName).ToList());
+            }
+            else
+            {
+                return View(studentsModels.OrderBy(e => e.GroupName).Where(e=>e.NumberOfBook==studentSerch).ToList());
+            }
         }
 
         [HttpGet]
@@ -520,11 +545,11 @@ namespace KursachTRPO.Controllers
             {
                 _context.Histories.Add(new History
                 {
-                    DateTime= historyModel.DateTime, 
+                    DateTime = historyModel.DateTime,
                     Type = historyModel.Type,
                     StudentId = historyModel.IdStudent
                 });
-                
+
                 await _context.SaveChangesAsync();
 
                 return Redirect($"/Admin/StudentInfo?Id={historyModel.IdStudent}");
