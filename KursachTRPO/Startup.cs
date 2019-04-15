@@ -40,7 +40,7 @@ namespace KursachTRPO
                 .AddCookie(options =>
                 {
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Logining/Login");
-                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Logining/Login");
+                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Logining/ErrorPage");
                 });
 
 

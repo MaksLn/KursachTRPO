@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewData["Title"] = "ErrorPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model KursachTRPO.Models.ErrorPageModel
+
+<div style="margin:unset; padding:unset" class="container">
+    <div class="row">
+        @{await Html.RenderPartialAsync("_Menu");}
+        <div class="col-lg-offset-5">
+            <h2>Доступ заблокирован</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-5">
+        </div>
+        <div class="col-lg-1">
+            <a style="width:170%" class="btn btn-primary" href="/Logining/Login">Войти</a>
+        </div>
+    </div>
+</div>
+
+
+
+

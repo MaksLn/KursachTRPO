@@ -43,7 +43,7 @@ namespace KursachTRPO.Controllers
                     return RedirectToAction("Index", "Admin");
 
                     if(user.RoleId==2)
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Admin");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
@@ -70,6 +70,16 @@ namespace KursachTRPO.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Login", "Logining");
+        }
+
+        public IActionResult ErrorPage(string ReturnUrl)
+        {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return View(new ErrorPageModel { ReturnURL=ReturnUrl});
+            }
+
+            return RedirectToAction("Login", "Logining"); 
         }
     }
 }

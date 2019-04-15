@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace KursachTRPO.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin,user")]
     public class AdminController : Controller
     {
         private AutorizationContext _context;
@@ -45,6 +45,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Group(int Id)
         {
             Group group = _context.Group.Where(e => e.Id == Id).FirstOrDefault();
@@ -61,6 +62,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AddGroup()
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
@@ -70,6 +72,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddGroup(GroupModel groupModel)
         {
             if (ModelState.IsValid)
@@ -92,6 +95,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult PutGroup(int Id)
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
@@ -107,6 +111,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutGroup(GroupModel groupModel)
         {
             if (ModelState.IsValid)
@@ -132,6 +137,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Users()
         {
 
@@ -141,6 +147,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AddUser()
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
@@ -149,6 +156,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Users(string Login)
         {
             User user = await _context.Users.FirstOrDefaultAsync(u => u.Login == Login);
@@ -166,6 +174,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddUser(RegisterModel userModel)
         {
             if (ModelState.IsValid)
@@ -275,6 +284,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AddStudents()
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
@@ -284,6 +294,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddStudents(StudentsModel studentsModel)
         {
             if (ModelState.IsValid)
@@ -314,6 +325,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Students(int Id)
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
@@ -360,6 +372,7 @@ namespace KursachTRPO.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult PutStudent(int Id)
         {
             TempData["UserName"] = HttpContext.User.Claims.Where((x, i) => i == 2).FirstOrDefault().Value;
@@ -397,6 +410,7 @@ namespace KursachTRPO.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutStudent(StudentsModel studentModel)
         {
             if (ModelState.IsValid)
