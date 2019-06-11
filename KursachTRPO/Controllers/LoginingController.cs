@@ -14,8 +14,8 @@ namespace KursachTRPO.Controllers
 {
     public class LoginingController : Controller
     {
-        private AutorizationContext _context;
-        public LoginingController(AutorizationContext context)
+        private DataBaseContext _context;
+        public LoginingController(DataBaseContext context)
         {
             _context = context;
         }

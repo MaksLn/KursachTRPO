@@ -13,8 +13,8 @@ namespace KursachTRPO.Controllers
     [Authorize(Roles = "admin,user")]
     public class AdminController : Controller
     {
-        private AutorizationContext _context;
-        public AdminController(AutorizationContext context)
+        private DataBaseContext _context;
+        public AdminController(DataBaseContext context)
         {
             _context = context;
         }

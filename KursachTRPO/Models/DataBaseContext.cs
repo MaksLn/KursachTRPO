@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KursachTRPO.Models
 {
-    public class AutorizationContext:DbContext
+    public class DataBaseContext:DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -16,7 +16,7 @@ namespace KursachTRPO.Models
         public DbSet<HistorySkips> HistorySkips { get; set; }
         public DbSet<History> Histories { get; set; }
 
-        public AutorizationContext(DbContextOptions<AutorizationContext> options)
+        public DataBaseContext(DbContextOptions<DataBaseContext> options)
             : base(options)
         {
             Database.EnsureCreated();

@@ -34,7 +34,7 @@ namespace KursachTRPO
             });
 
             string connection = "Server=(localdb)\\mssqllocaldb;Database=TRPObd;Trusted_Connection=True;";
-            services.AddDbContext<AutorizationContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -68,7 +68,7 @@ namespace KursachTRPO
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Logining}/{action=Login}/{id?}");
+                    template: "{controller=Admin}/{action=Index}/{id?}");
             });
         }
     }
