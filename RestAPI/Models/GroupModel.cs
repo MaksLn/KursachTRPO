@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace KursachTRPO.Models
         public string Specialty { get; set; }
         [Required(ErrorMessage = "Укажите дату создания группы")]
         public DateTime CreateYear { get; set; }
+        public int Count { get; set; }
     }
 }

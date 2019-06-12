@@ -6,6 +6,7 @@ using KursachTRPO.Models;
 using KursachTRPO.Models.bdModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RestAPI.Models;
 
 namespace RestAPI.Controllers
@@ -22,15 +23,15 @@ namespace RestAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Group> GetGroups()
+        public IEnumerable<GroupModel> GetGroups()
         {
-            return dataBaseContext.Group.ToList(); 
+            return dataBaseContext.Group.Include(s=>s.Students).Select(e=>ConvertToModel(e)).ToList(); 
         }
 
         [HttpGet("{id}")]
-        public IEnumerable<Group> GetGroup(int id)
+        public IEnumerable<GroupModel> GetGroup(int id)
         {
-                return dataBaseContext.Group.Where(e => e.Id == id).ToList();
+                return dataBaseContext.Group.Include(s => s.Students).Where(e => e.Id == id).Select(e=>ConvertToModel(e)).ToList();
         }
 
         [HttpPost]
@@ -96,5 +97,8 @@ namespace RestAPI.Controllers
 
             return Ok();
         }
+
+        private GroupModel ConvertToModel(Group group) =>
+            new GroupModel { CreateYear = group.CreateYear, Name = group.Name, Id = group.Id, Specialty = group.Specialty, Count = group.Students.Count()};
     }
 }

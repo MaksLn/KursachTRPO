@@ -44,5 +44,6 @@ namespace RestAPI.Models
             modelBuilder.Entity<Student>().HasData(new Student[] { student1,student2 });
             base.OnModelCreating(modelBuilder);
         }
+
     }
 }
