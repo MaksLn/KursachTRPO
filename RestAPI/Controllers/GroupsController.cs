@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KursachTRPO.Models;
 using KursachTRPO.Models.bdModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin,user")]
     public class GroupsController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
@@ -35,6 +37,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddGroup([FromBody] GroupModel groupModel)
         {
             if (ModelState.IsValid)
@@ -57,6 +60,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PutGroup(int id, [FromBody] GroupModel groupModel)
         {
             if (ModelState.IsValid)
@@ -83,6 +87,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteGroup(int id)
         {
             try

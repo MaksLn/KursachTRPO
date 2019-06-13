@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KursachTRPO.Models;
 using KursachTRPO.Models.bdModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin, user")]
     public class StudentController : ControllerBase
     {
         private DataBaseContext dataBaseContext;

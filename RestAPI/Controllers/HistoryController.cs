@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using KursachTRPO.Models;
 using KursachTRPO.Models.bdModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Models;
@@ -12,6 +13,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/student/[controller]")]
     [ApiController]
+    [Authorize(Roles = "admin,user")]
     public class HistoryController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
