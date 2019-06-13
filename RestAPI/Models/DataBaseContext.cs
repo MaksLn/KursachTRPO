@@ -16,18 +16,14 @@ namespace RestAPI.Models
         public DbSet<Student> Students { get; set; }
         public DbSet<HistorySkips> HistorySkips { get; set; }
         public DbSet<History> Histories { get; set; }
-        public DbSet<GroupModel> groupModelConfigs { get; set; }
 
         public DataBaseContext(DbContextOptions<DataBaseContext> options)
             : base(options)
         {
             Database.EnsureCreated();
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GroupModel>().HasKey(e => e.Id);
-
             string adminRoleName = "admin";
             string userRoleName = "user";
 
@@ -46,9 +42,6 @@ namespace RestAPI.Models
             modelBuilder.Entity<Group>().HasData(new Group[] { group1 });
             modelBuilder.Entity<Student>().HasData(new Student[] { student1,student2 });
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.AddConfiguration(new GroupModelConfig());
-
         }
 
     }
