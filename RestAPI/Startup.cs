@@ -48,7 +48,7 @@ namespace RestAPI
                     });
 
             string connection = "Server=(localdb)\\mssqllocaldb;Database=TRPObd;Trusted_Connection=True;";
-            // добавляем контекст MobileContext в качестве сервиса в приложение
+          
             services.AddDbContext<DataBaseContext>(options =>
                 options.UseSqlServer(connection));
 
