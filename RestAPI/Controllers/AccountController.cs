@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using KursachTRPO.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +20,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
@@ -26,10 +31,10 @@ namespace RestAPI.Controllers
         }
 
         [HttpPost]
-        public async Task Token()
+        public async Task Token([FromBody] dynamic value)
         {
-            var username = Request.Form["login"];
-            var password = Request.Form["password"];
+            var username = value.login.ToString();
+            var password = value.password.ToString();
 
             var identity = GetIdentity(username, password);
 
@@ -63,7 +68,7 @@ namespace RestAPI.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            var user = dataBaseContext.Users.Include(e => e.Role).Where(e=>e.Login==username&&e.Password==password).FirstOrDefault();
+            var user = dataBaseContext.Users.Include(e => e.Role).Where(e => e.Login == username && e.Password == password).FirstOrDefault();
 
             if (user != null)
             {

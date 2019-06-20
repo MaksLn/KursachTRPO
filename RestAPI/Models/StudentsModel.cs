@@ -19,7 +19,6 @@ namespace KursachTRPO.Models
         public string Address { get; set; }
         [Required(ErrorMessage = "Введите номер зачетной книжки")]
         public string NumberOfBook { get; set; }
-        [Required(ErrorMessage = "Введите название группы")]
         public string GroupName { get; set; }
     }
 }

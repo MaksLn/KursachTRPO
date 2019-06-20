@@ -38,7 +38,6 @@ namespace KursachTRPO.Models
         public DateTime StartSkips { get; set; }
         [Required(ErrorMessage = "Введите дату")]
         public DateTime EndSkips { get; set; }
-        [Required(ErrorMessage = "Введите дату")]
         public int? IdStudent { get; set; }
     }
 }

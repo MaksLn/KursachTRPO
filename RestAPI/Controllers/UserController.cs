@@ -13,7 +13,7 @@ namespace RestAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="admin")]
+    [Authorize(Roles = "admin")]
     public class UserController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
@@ -32,7 +32,7 @@ namespace RestAPI.Controllers
         [HttpGet("{login}")]
         public IEnumerable<UserModel> GetUser(string login)
         {
-            return dataBaseContext.Users.Include(e => e.Role).Where(e=>e.Login==login).Select(e => ConvertToUserModel(e));
+            return dataBaseContext.Users.Include(e => e.Role).Where(e => e.Login == login).Select(e => ConvertToUserModel(e));
         }
 
         [HttpPost]
@@ -63,12 +63,12 @@ namespace RestAPI.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutUser([FromBody] UserModel userModel)
+        [HttpPut("{login}")]
+        public async Task<IActionResult> PutUser(string login, [FromBody] UserModel userModel)
         {
             if (ModelState.IsValid)
             {
-                User user = dataBaseContext.Users.Where(e => e.Login == userModel.Name).FirstOrDefault();
+                User user = dataBaseContext.Users.Where(e => e.Login == login).FirstOrDefault();
 
                 if (user == null)
                 {
@@ -92,13 +92,13 @@ namespace RestAPI.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete("{login}")]
+        public async Task<IActionResult> DeleteUser(string login)
         {
             try
             {
-                dataBaseContext.Remove(await dataBaseContext.FindAsync<User>(id));
-                dataBaseContext.SaveChanges();
+                dataBaseContext.Remove(await dataBaseContext.Users.Where(e=>e.Login==login).FirstOrDefaultAsync());
+                await dataBaseContext.SaveChangesAsync();
 
                 return Ok();
             }
