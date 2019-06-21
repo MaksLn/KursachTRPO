@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using RestAPI.Models;
+using RestAPI.Services;
 
 namespace RestAPI.Controllers
 {
@@ -24,9 +25,11 @@ namespace RestAPI.Controllers
     public class AccountController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
+        private GetHashPassword getHashPassword;
 
-        public AccountController(DataBaseContext context)
+        public AccountController(DataBaseContext context, GetHashPassword getHash)
         {
+            getHashPassword = getHash;
             dataBaseContext = context;
         }
 
@@ -36,7 +39,7 @@ namespace RestAPI.Controllers
             var username = value.login.ToString();
             var password = value.password.ToString();
 
-            var identity = GetIdentity(username, password);
+            var identity = GetIdentity(username, getHashPassword.GetHashString(username, password));
 
             if (identity == null)
             {
@@ -68,7 +71,7 @@ namespace RestAPI.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            var user = dataBaseContext.Users.Include(e => e.Role).Where(e => e.Login == username && e.Password == password).FirstOrDefault();
+            var user = dataBaseContext.Users.Include(e => e.Role).Where(e => e.Login == username && getHashPassword.ComparerHash(e.Password, password)).FirstOrDefault();
 
             if (user != null)
             {

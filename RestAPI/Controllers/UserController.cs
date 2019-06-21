@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using RestAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using RestAPI.Services;
 
 namespace RestAPI.Controllers
 {
@@ -17,9 +18,11 @@ namespace RestAPI.Controllers
     public class UserController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
+        private GetHashPassword getHashPassword;
 
-        public UserController(DataBaseContext context)
+        public UserController(DataBaseContext context, GetHashPassword hashPassword)
         {
+            getHashPassword = hashPassword;
             dataBaseContext = context;
         }
 
@@ -48,7 +51,7 @@ namespace RestAPI.Controllers
                     {
                         Email = userModel.Email,
                         Login = userModel.Name,
-                        Password = userModel.Password,
+                        Password = getHashPassword.GetHashString(userModel.Name, userModel.Password),
                         Role = await dataBaseContext.Roles.Where(e => e.Name == userModel.Role).FirstOrDefaultAsync()
                     });
                     await dataBaseContext.SaveChangesAsync();
@@ -79,7 +82,7 @@ namespace RestAPI.Controllers
 
                     user.Email = userModel.Email;
                     user.Login = userModel.Name;
-                    user.Password = userModel.Password;
+                    user.Password = getHashPassword.GetHashString(userModel.Name, userModel.Password);
                     user.Role = await dataBaseContext.Roles.Where(e => e.Name == userModel.Role).FirstOrDefaultAsync();
 
                     dataBaseContext.Users.Update(user);
