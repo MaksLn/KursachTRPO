@@ -79,7 +79,6 @@ namespace RestAPI.Controllers
                 }
                 else
                 {
-
                     user.Email = userModel.Email;
                     user.Login = userModel.Name;
                     user.Password = getHashPassword.GetHashString(userModel.Name, userModel.Password);

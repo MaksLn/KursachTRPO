@@ -8,7 +8,7 @@ using System.Text;
 
 namespace RestAPI.Services
 {
-    public class GetHashPassword
+    public class GetHashPassword:IEqualityComparer<string>
     {
         public string GetHashString(string login, string password)
         {
@@ -23,6 +23,16 @@ namespace RestAPI.Services
         public bool ComparerHash(string hash, string passwordHash)
         {
             return hash.SequenceEqual(passwordHash);
+        }
+
+        public bool Equals(string hash, string passwordHash)
+        {
+            return hash.SequenceEqual(passwordHash);
+        }
+
+        public int GetHashCode(string obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }

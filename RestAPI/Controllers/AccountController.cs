@@ -10,6 +10,7 @@ using KursachTRPO.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,8 +35,9 @@ namespace RestAPI.Controllers
         }
 
         [HttpPost]
-        public async Task Token([FromBody] dynamic value)
+        public async Task Token([FromBody] dynamic value, [FromServices]IHttpContextAccessor accessor)
         {
+            var ip = accessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
             var username = value.login.ToString();
             var password = value.password.ToString();
 
