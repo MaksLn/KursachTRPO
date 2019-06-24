@@ -80,7 +80,8 @@ namespace RestAPI.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimsIdentity.DefaultNameClaimType, user.Login),
-                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name)
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name),
+                    new Claim(ClaimsIdentity.DefaultIssuer, Request.HttpContext.Connection.RemoteIpAddress.ToString())
                 };
                 ClaimsIdentity claimsIdentity =
                 new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,

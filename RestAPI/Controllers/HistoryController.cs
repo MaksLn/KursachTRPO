@@ -14,6 +14,7 @@ namespace RestAPI.Controllers
     [Route("api/student/[controller]")]
     [ApiController]
     [Authorize(Roles = "admin,user")]
+    [ClaimRequirement]
     public class HistoryController : ControllerBase
     {
         private DataBaseContext dataBaseContext;

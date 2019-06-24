@@ -15,6 +15,7 @@ namespace RestAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "admin")]
+    [ClaimRequirement]
     public class UserController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
