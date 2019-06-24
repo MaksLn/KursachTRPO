@@ -30,7 +30,7 @@ namespace RestAPI.Models
             // добавляем роли
             Role adminRole = new Role { Id = 1, Name = adminRoleName };
             Role userRole = new Role { Id = 2, Name = userRoleName };
-            User adminUser = new User { Id = 1, Email = "admin@mail.ru", Login="admin", Password = "123456", RoleId = adminRole.Id };
+            User adminUser = new User { Id = 1, Email = "admin@mail.ru", Login="admin", Password = "2Q75X7K6+uRmFQqK9XRjE3+E+TfeYnpelZogcT1c3R4=", RoleId = adminRole.Id };
 
             Student student1 = new Student {Id=1, Name = "Maks", GroupId = 1, Address = "420", MidleName = "Mazur", LastName = "Aleksandrovich", NumberOfBook = "43253456" };
             Student student2 = new Student {Id=2, Name = "Maks", GroupId = 1, Address = "323", MidleName = "Mazur", LastName = "Aleksandrovich", NumberOfBook = "43345456" };

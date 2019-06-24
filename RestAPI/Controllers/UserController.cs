@@ -19,9 +19,9 @@ namespace RestAPI.Controllers
     public class UserController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
-        private GetHashPassword getHashPassword;
+        private PasswordHashManager getHashPassword;
 
-        public UserController(DataBaseContext context, GetHashPassword hashPassword)
+        public UserController(DataBaseContext context, PasswordHashManager hashPassword)
         {
             getHashPassword = hashPassword;
             dataBaseContext = context;
@@ -115,7 +115,8 @@ namespace RestAPI.Controllers
             Email = user.Email,
             Name = user.Login,
             Password = user.Password,
-            Role = user.Role.Name };
+            Role = user.Role.Name
+        };
 
     }
 }

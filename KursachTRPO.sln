@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KursachTRPO", "KursachTRPO\KursachTRPO.csproj", "{B65081C6-4E27-4282-B62B-B59D85DBBD05}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestAPI", "RestAPI\RestAPI.csproj", "{88C6FFE9-E862-4C0E-9BA2-43EE3386249C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPI.Tests", "RestAPI.Tests\RestAPI.Tests.csproj", "{4D74691B-3BC8-4088-B5EC-E12199306C4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{88C6FFE9-E862-4C0E-9BA2-43EE3386249C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88C6FFE9-E862-4C0E-9BA2-43EE3386249C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88C6FFE9-E862-4C0E-9BA2-43EE3386249C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D74691B-3BC8-4088-B5EC-E12199306C4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D74691B-3BC8-4088-B5EC-E12199306C4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D74691B-3BC8-4088-B5EC-E12199306C4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D74691B-3BC8-4088-B5EC-E12199306C4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

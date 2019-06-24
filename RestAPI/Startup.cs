@@ -34,16 +34,16 @@ namespace RestAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddSingleton<GetHashPassword>();
-
+            services.AddSingleton<PasswordHashManager>();
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:3000", "https://localhost:5001/api/account").AllowAnyHeader()
-                                .AllowAnyMethod(); 
+                    builder
+                        .WithOrigins("http://localhost:3000", "https://localhost:5001/api/account")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod(); 
                 });
             });
 
@@ -65,11 +65,8 @@ namespace RestAPI
                         };
                     });
 
-            string connection = "Server=(localdb)\\mssqllocaldb;Database=TRPObd;Trusted_Connection=True;";
-          
-            services.AddDbContext<DataBaseContext>(options =>
-                options.UseSqlServer(connection));
-
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DataBaseContext>(options => options.UseSqlServer(connection));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
        

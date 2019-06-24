@@ -26,11 +26,11 @@ namespace RestAPI.Controllers
     public class AccountController : ControllerBase
     {
         private DataBaseContext dataBaseContext;
-        private GetHashPassword getHashPassword;
+        private PasswordHashManager passwordHashManager;
 
-        public AccountController(DataBaseContext context, GetHashPassword getHash)
+        public AccountController(DataBaseContext context, PasswordHashManager getHash)
         {
-            getHashPassword = getHash;
+            passwordHashManager = getHash;
             dataBaseContext = context;
         }
 
@@ -41,7 +41,7 @@ namespace RestAPI.Controllers
             var username = value.login.ToString();
             var password = value.password.ToString();
 
-            var identity = GetIdentity(username, getHashPassword.GetHashString(username, password));
+            var identity = GetIdentity(username, passwordHashManager.GetHashString(username, password));
 
             if (identity == null)
             {
@@ -73,7 +73,10 @@ namespace RestAPI.Controllers
 
         private ClaimsIdentity GetIdentity(string username, string password)
         {
-            var user = dataBaseContext.Users.Include(e => e.Role).Where(e => e.Login == username && getHashPassword.ComparerHash(e.Password, password)).FirstOrDefault();
+            var user = dataBaseContext.Users
+                .Include(e => e.Role)
+                .Where(e => e.Login == username && passwordHashManager.CompareHash(e.Password, password))
+                .FirstOrDefault();
 
             if (user != null)
             {
